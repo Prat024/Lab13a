@@ -1,0 +1,324 @@
+Lab 13a - Spark Scala Programming
+
+1) Enter Spark Shell 
+
+cd /usr/lib/spark
+./bin/spark-shell
+
+
+2) Immutable Variables
+
+val msg="Hello, How are you"
+msg: String = Hello, How are you
+
+scala> msg="How is your work"
+<console>:27: error: reassignment to val
+         msg="How is your work"
+            ^
+
+
+3) Mutable Variables
+
+scala> var msg="Hello, How are you"
+msg: String = Hello, How are you
+
+scala> msg="How is your job"
+msg: String = How is your job
+
+
+4) Type Inference
+msg =10
+<console>:27: error: type mismatch;
+ found   : Int(10)
+ required: String
+         msg =10
+              ^
+
+
+5) Block Expression
+
+val x = {val a=20; 
+		val b=100;
+		 b-a}
+x: Int = 80
+
+
+6) Lazy Values
+
+lazy val file = scala.io.Source.fromFile("UnitedStates").mkString
+file: String = <lazy>
+
+
+7) Control Structures
+
+scala> var x=5
+x: Int = 5
+
+scala> val s = if(x>0 && x<6)1 else 0
+s: Int = 1
+
+scala> val s = if(x>0 && x<6)"positive" else 0
+s: Any = positive
+
+
+8) While Loops
+
+scala> var args="700"
+args: String = 700
+
+scala> var i = 0
+i: Int = 0
+
+scala> while(i<args.length)
+     | {
+     | println(args(i))
+     | i +=1
+     | }
+7
+0
+0
+
+
+9) Foreach Loop
+
+scala> arg.foreach(arg=>println(arg))
+h
+i
+
+scala> arg.foreach(println)
+h
+i
+
+
+10) For Loops
+
+a) Basic
+for (i<-1 to 5)
+     | println(i)
+1
+2
+3
+4
+5
+
+b) Traverse array
+scala> val in = "Hello World"
+in: String = Hello World
+
+scala> var sum=0
+sum: Int = 0
+
+scala> for(i<-0 until in.length)sum+=i
+
+scala> print(sum)
+55
+
+c) Multiple generators
+scala> for(i<-1 to 3;j<-1 to 3)println(10*i+j)
+11
+12
+13
+21
+22
+23
+31
+32
+33
+
+d) Conditional multi generators
+scala> for(i<-1 to 3;j<- 1 to 3 if i==j)println(10*i+j)
+11
+22
+33
+
+e) Variable in Loops
+scala> for(i<-1 to 3; x=4-i;j<-x to 3)println(10*i+j)
+13
+22
+23
+31
+32
+33
+
+f) Yield - Collection of values
+scala> val x=for(i<-1 to 20)yield i*2.5
+x: scala.collection.immutable.IndexedSeq[Double] = Vector(2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0, 32.5, 35.0, 37.5, 40.0, 42.5, 45.0, 47.5, 50.0)
+
+scala> for(i<-x)println(i)
+2.5
+5.0
+7.5
+10.0
+12.5
+15.0
+17.5
+20.0
+22.5
+25.0
+27.5
+30.0
+32.5
+35.0
+37.5
+40.0
+42.5
+45.0
+47.5
+50.0
+
+
+11) Functions
+
+a) Area Radius Int
+scala> def area(radius:Int):Double={3.14*radius*radius}
+area: (radius: Int)Double
+
+scala> area(10)
+res13: Double = 314.0
+
+b) Area Radius Double
+scala> def area(radius:Double):Double={3.14*radius*radius}
+area: (radius: Double)Double
+
+scala> area(10.09)
+res12: Double = 319.677434
+
+c) Recursive function
+scala> def factorial(n:Int):Int=if(n==0)1 else n*factorial(n-1)
+factorial: (n: Int)Int
+
+scala> factorial(5)
+res16: Int = 120
+
+
+12) Arrays
+
+a) Int Array
+scala> val n = new Array[Int](10)
+n: Array[Int] = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+b) String Array
+scala> val s = new Array[String](10)
+s: Array[String] = Array(null, null, null, null, null, null, null, null, null, null)
+
+c) Set String Array
+scala> val st = Array("Hello", "World")
+st: Array[String] = Array(Hello, World)
+
+
+13) Array Buffers
+
+a) Different buffers
+scala> import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ArrayBuffer
+
+scala> val a=ArrayBuffer[Int]()
+a: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
+
+scala> a+=1
+res17: a.type = ArrayBuffer(1)
+
+scala> a+=(2,3,5)
+res18: a.type = ArrayBuffer(1, 2, 3, 5)
+
+scala> a++=Array(6,7,8)
+res19: a.type = ArrayBuffer(1, 2, 3, 5, 6, 7, 8)
+
+b) Transformation
+scala> Array(1,2,3,4).sum
+res32: Int = 10
+
+scala> Array(1,5,9,8).max
+res33: Int = 9
+
+scala> val a=Array(1,7,2,9)
+a: Array[Int] = Array(1, 7, 2, 9)
+
+scala> scala.util.Sorting.quickSort(a)
+
+scala> a.mkString("**")
+res35: String = 1**2**7**9
+
+c) Traversing 
+scala> for(el<-a)
+     | println(el)
+1
+2
+7
+9
+
+scala> for(el<-a if el%2==0)yield(2*el)
+res37: Array[Int] = Array(4)
+
+
+14) Maps
+
+a) Set Maps
+scala> val mapping=Map("UnitedStates"->"UnitedKingdom", "Tokyo"->"India")
+mapping: scala.collection.immutable.Map[String,String] = Map(UnitedStates -> UnitedKingdom, Tokyo -> India)
+
+scala> val mapping=scala.collection.mutable.Map("UnitedStates" -> "U", "Tokyo"-> "I")
+mapping: scala.collection.mutable.Map[String,String] = Map(Tokyo -> I, UnitedStates -> U)
+
+scala> val x=mapping("UnitedStates")
+x: String = U
+
+scala> val x = mapping.getOrElse("Unit",0)
+x: Any = 0
+
+b) Access maps
+scala> mapping -="UnitedStates"
+res38: mapping.type = Map(Tokyo -> I)
+
+scala> mapping +=("Ireland" -> "New Zealand")
+res39: mapping.type = Map(Tokyo -> I, Ireland -> New Zealand)
+
+scala> for((u,i)<-mapping)yield(i,u)
+res40: scala.collection.mutable.Map[String,String] = Map(I -> Tokyo, New Zealand -> Ireland)
+
+
+15) Tuples
+scala> val a = (1,4,"Bob","Jack")
+a: (Int, Int, String, String) = (1,4,Bob,Jack)
+
+scala> a._2
+res41: Int = 4
+
+scala> "New Jersey".partition(_.isUpper)
+res43: (String, String) = (NJ,ew ersey)
+
+
+16) Lists
+scala> val lst = List(1,2)
+lst: List[Int] = List(1, 2)
+
+scala> lst.head
+res44: Int = 1
+
+scala> lst.tail
+res45: List[Int] = List(2)
+
+scala> 2::List(4,5)
+res46: List[Int] = List(2, 4, 5)
+
+scala> def sum(l:List[Int]):Int={if(l==Nil)0 else l.head + sum(l.tail)}
+sum: (l: List[Int])Int
+
+scala> val y = sum(lst)
+y: Int = 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
